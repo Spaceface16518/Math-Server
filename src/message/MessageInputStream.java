@@ -3,6 +3,7 @@ package message;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class MessageInputStream extends InputStream {
     DataInputStream in;
@@ -27,11 +28,11 @@ public class MessageInputStream extends InputStream {
         if (n != HEADER_LEN)
             throw new RuntimeException("Incomplete packet; length " + n + " was less than " + HEADER_LEN);
 
-        String header = new String(headerBytes);
+        String header = new String(Arrays.copyOfRange(headerBytes, 0, HEADER_LEN - 1));
 
         return switch (header) {
-            case "CONN" -> new ConnectionMessage(in.readUTF());
-            case "CALC" -> new CalculationMessage(in.readUTF());
+            case "CONN" -> new ConnectionMessage(new String(in.readAllBytes()));
+            case "CALC" -> new CalculationMessage(new String(in.readAllBytes()));
             case "TERM" -> new TerminationMessage();
             default -> throw new RuntimeException("Illegal message type " + header);
         };

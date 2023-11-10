@@ -12,4 +12,9 @@ public abstract class Message {
      * @return The contents of the message, used as the body of the packet.
      */
     public abstract String body();
+
+    @Override
+    public String toString() {
+        return type() + System.lineSeparator() + body();
+    }
 }

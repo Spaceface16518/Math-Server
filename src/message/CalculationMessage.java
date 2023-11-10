@@ -16,4 +16,12 @@ public class CalculationMessage extends Message {
     public String body() {
         return expression;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CalculationMessage other) {
+            return expression.equals(other.expression);
+        }
+        return false;
+    }
 }

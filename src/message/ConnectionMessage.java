@@ -16,4 +16,12 @@ public class ConnectionMessage extends Message {
     public String type() {
         return "CONN";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof ConnectionMessage other) {
+            return clientName.equals(other.clientName);
+        }
+        return false;
+    }
 }

@@ -16,6 +16,8 @@ class MessageOutputStreamTest {
 
         try {
             messageOutputStream.write(message);
+            messageOutputStream.flush();
+            messageOutputStream.close();
         } catch (IOException e) {
             fail(e);
         }
@@ -36,6 +38,7 @@ class MessageOutputStreamTest {
         String expected = "CALC\n1 + 1";
         assertWrittenEquals(expected, message);
     }
+
     @Test
     void termination() {
         Message message = new TerminationMessage();

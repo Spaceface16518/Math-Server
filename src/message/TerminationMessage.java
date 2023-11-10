@@ -13,4 +13,9 @@ public class TerminationMessage extends Message {
     public String body() {
         return "";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof TerminationMessage;
+    }
 }

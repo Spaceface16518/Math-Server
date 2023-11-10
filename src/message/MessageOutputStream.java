@@ -21,11 +21,13 @@ public class MessageOutputStream extends OutputStream {
     }
 
     public void write(Message message) throws IOException {
-        // write header (type of message)
-        out.writeUTF(message.type());
-        // write line separator
-        out.writeChar('\n');
-        // write packet contents
-        out.writeUTF(message.body());
+        // header (type of message)
+        String sb = message.type() +
+                // write line separator
+                System.lineSeparator() +
+                // write packet contents
+                message.body();
+
+        out.writeBytes(sb);
     }
 }
