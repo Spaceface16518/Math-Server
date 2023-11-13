@@ -46,6 +46,6 @@ public class Calculation {
             }
         }
         return String.valueOf(result);
+        //Prints result.
     }
-
 }
