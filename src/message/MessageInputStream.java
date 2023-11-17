@@ -8,11 +8,11 @@ import java.util.Arrays;
 public class MessageInputStream extends InputStream {
     DataInputStream in;
 
-    MessageInputStream(InputStream in) {
+    public MessageInputStream(InputStream in) {
         this(new DataInputStream(in));
     }
 
-    MessageInputStream(DataInputStream in) {
+    public MessageInputStream(DataInputStream in) {
         this.in = in;
     }
 
