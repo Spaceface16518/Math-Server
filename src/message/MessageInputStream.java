@@ -12,7 +12,7 @@ public class MessageInputStream extends InputStream {
         this(new DataInputStream(in));
     }
 
-    MessageInputStream(DataInputStream in) {
+    public MessageInputStream(DataInputStream in) {
         this.in = in;
     }
 

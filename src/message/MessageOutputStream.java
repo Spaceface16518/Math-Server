@@ -11,7 +11,7 @@ public class MessageOutputStream extends OutputStream {
         this(new DataOutputStream(out));
     }
 
-    MessageOutputStream(DataOutputStream out) {
+    public MessageOutputStream(DataOutputStream out) {
         this.out = out;
     }
 
