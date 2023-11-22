@@ -22,17 +22,52 @@ public class MessageInputStream extends InputStream {
     }
 
     public Message readMessage() throws IOException {
-        final int HEADER_LEN = 5;
+        final int HEADER_LEN = 4;
         byte[] headerBytes = new byte[HEADER_LEN];
-        int n = in.read(headerBytes);
-        if (n != HEADER_LEN)
-            throw new RuntimeException("Incomplete packet; length " + n + " was less than " + HEADER_LEN);
+        int nread = 0;
+        while (nread < HEADER_LEN) {
+            int n = in.read(headerBytes, nread, HEADER_LEN - nread);
+            if (n == -1) {
+                if (nread > 0) {
+                    throw new RuntimeException("Incomplete packet; read " + nread + " bytes of header");
+                }
+                return null;
+            }
+            nread += n;
+        }
 
-        String header = new String(Arrays.copyOfRange(headerBytes, 0, HEADER_LEN - 1));
+        String header = new String(headerBytes);
 
+        StringBuilder body = new StringBuilder();
         return switch (header) {
-            case "CONN" -> new ConnectionMessage(new String(in.readAllBytes()));
-            case "CALC" -> new CalculationMessage(new String(in.readAllBytes()));
+            case "CONN" -> {
+                // read until line separator
+                while (true) {
+                    int b = in.read();
+                    if (b == -1) {
+                        throw new RuntimeException("Incomplete packet; read " + nread + " bytes of header");
+                    }
+                    if (b == '\n') {
+                        break;
+                    }
+                    body.append((char) b);
+                }
+                yield new ConnectionMessage(body.toString());
+            }
+            case "CALC" -> {
+                // read until line separator
+                while (true) {
+                    int b = in.read();
+                    if (b == -1) {
+                        throw new RuntimeException("Incomplete packet; read " + nread + " bytes of header");
+                    }
+                    if (b == '\n') {
+                        break;
+                    }
+                    body.append((char) b);
+                }
+                yield new CalculationMessage(body.toString());
+            }
             case "TERM" -> new TerminationMessage();
             default -> throw new RuntimeException("Illegal message type " + header);
         };

@@ -23,10 +23,10 @@ public class MessageOutputStream extends OutputStream {
     public void write(Message message) throws IOException {
         // header (type of message)
         String sb = message.type() +
-                // write line separator
-                System.lineSeparator() +
                 // write packet contents
-                message.body();
+                message.body() +
+                // write line separator
+                System.lineSeparator();
 
         out.writeBytes(sb);
     }
