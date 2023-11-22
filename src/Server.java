@@ -88,6 +88,7 @@ public class Server {
                 case "TERM" -> "Client " + name + " disconnected";
                 default -> throw new RuntimeException("Illegal message type " + message.type());
             };
+            System.out.println(timestamp + client + logString);
         }
     }
 }
