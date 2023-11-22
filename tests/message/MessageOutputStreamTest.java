@@ -28,21 +28,21 @@ class MessageOutputStreamTest {
     @Test
     void connection() {
         Message message = new ConnectionMessage("name");
-        String expected = "CONNname";
+        String expected = "CONNname\n";
         assertWrittenEquals(expected, message);
     }
 
     @Test
     void calculation() {
         Message message = new CalculationMessage("1 + 1");
-        String expected = "CALC1 + 1";
+        String expected = "CALC1 + 1\n";
         assertWrittenEquals(expected, message);
     }
 
     @Test
     void termination() {
         Message message = new TerminationMessage();
-        String expected = "TERM";
+        String expected = "TERM\n";
         assertWrittenEquals(expected, message);
     }
 }
