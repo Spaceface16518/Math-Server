@@ -7,7 +7,7 @@ import java.io.OutputStream;
 public class MessageOutputStream extends OutputStream {
     DataOutputStream out;
 
-    MessageOutputStream(OutputStream out) {
+    public MessageOutputStream(OutputStream out) {
         this(new DataOutputStream(out));
     }
 
