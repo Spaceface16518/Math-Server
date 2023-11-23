@@ -8,13 +8,16 @@ public class Calculation {
         String substring = ""; // Initializes substring.
         for (int i = 0; i < input.length(); i++) { // Iterates through the input string and moves the substring indexes.
             end = i;
-            //System.out.println(input.charAt(i));
-            if (input.charAt(i) == ' ') { // If there is a space, it means the start of a new substring.
-                substring = input.substring(start, end); // Substring is created using the indexes.
-                start = i + 1; // Start index is updated so that the next substring does not include a space.
+            if (input.charAt(i) == ' ' || i == input.length() - 1) { // If there is a space, it means the start of a new substring.
+                if(input.charAt(i) == ' ') {
+                    substring = input.substring(start, end); // Substring is created using the indexes.
+                    start = i + 1; // Start index is updated so that the next substring does not include a space.
+                    // If the substring is equal to an operation sign, or it is the last substring (which should be an operand) it does the operation.
+                } else if (i == input.length() - 1) {
+                    substring = String.valueOf(input.charAt(i));
+                }
 
-                // If the substring is equal to an operation sign, or it is the last substring (which should be an operand) it does the operation.
-                if (substring.equals("+") || substring.equals("-") || substring.equals("/") || substring.equals("*") || i == input.length() - 1) {
+                if (substring.equals("+") || substring.equals("-") || substring.equals("/") || substring.equals("*")) {
 
                     // Stores values into temporary variables to check if they are numbers or not.
                     String secondValueStr = values.pop();
