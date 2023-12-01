@@ -37,7 +37,7 @@ class TCPClient {
         //MessageInputStream in = new MessageInputStream(inFromServer);
         
         // Variables
-		String[] acceptable = new String[] {"+", "-", "/", "*","0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+	String[] acceptable = new String[] {"+", "-", "/", "*","0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         int accLen = acceptable.length;
         int errorFree = 0;
         int numCalcs = 0;
