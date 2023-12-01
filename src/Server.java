@@ -10,6 +10,9 @@ import java.time.Instant;
 
 
 public class Server {
+    /**
+     * The client welcoming socket
+     */
     private ServerSocket serverSocket;
 
     public Server(int port) throws IOException {
@@ -33,13 +36,23 @@ public class Server {
     }
 
     private static class ClientHandler extends Thread {
+        /**
+         * The client socket
+         */
         private final Socket clientSocket;
+        /**
+         * The output stream to the client
+         */
         private final MessageOutputStream out;
+        /**
+         * The input stream from the client
+         */
         private final MessageInputStream in;
 
         private String name;
 
         public ClientHandler(Socket clientSocket) throws IOException {
+            // set up the client socket
             this.clientSocket = clientSocket;
             this.out = new MessageOutputStream(clientSocket.getOutputStream());
             this.in = new MessageInputStream(clientSocket.getInputStream());
@@ -50,21 +63,25 @@ public class Server {
                 log("Client connection accepted: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
                 while (true) {
                     var message = in.readMessage();
+                    // break if the message is null
                     if (message == null) {
                         return;
                     }
                     switch (message.type()) {
                         case "CONN" -> {
+                            // set the client name
                             name = message.body();
                         }
                         case "CALC" -> {
-                            // reply with result of calculation
+                            // calculate the result
                             var calculator = new Calculation();
                             var result = calculator.calculate(message.body());
+                            // reply with result of calculation
                             out.write(new CalculationMessage(result));
                             out.flush();
                         }
                         case "TERM" -> {
+                            // break from the loop and close the socket
                             return;
                         }
                         default -> throw new RuntimeException("Illegal message type " + message.type());
@@ -72,6 +89,7 @@ public class Server {
                     log(message);
                 }
             } catch (IOException e) {
+                // something went wrong, so print the stack trace, and close the socket
                 e.printStackTrace();
             } finally {
                 // close the socket (runs when the "TERM" case returns, or something fails)

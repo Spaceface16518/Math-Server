@@ -3,7 +3,6 @@ package message;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 public class MessageInputStream extends InputStream {
     DataInputStream in;
@@ -22,6 +21,7 @@ public class MessageInputStream extends InputStream {
     }
 
     public Message readMessage() throws IOException {
+        // read the header into a byte array
         final int HEADER_LEN = 4;
         byte[] headerBytes = new byte[HEADER_LEN];
         int nread = 0;
@@ -38,6 +38,7 @@ public class MessageInputStream extends InputStream {
 
         String header = new String(headerBytes);
 
+        // read the body into a StringBuilder
         StringBuilder body = new StringBuilder();
         return switch (header) {
             case "CONN" -> {
